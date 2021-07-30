@@ -37,7 +37,6 @@ template = 'ffmpeg -loglevel panic -y -i {} -strict -2 {}'
 
 def process_video_file(vfile, args, gpu_id):
 	video_stream = cv2.VideoCapture(vfile)
-	
 	frames = []
 	while 1:
 		still_reading, frame = video_stream.read()
@@ -45,15 +44,11 @@ def process_video_file(vfile, args, gpu_id):
 			video_stream.release()
 			break
 		frames.append(frame)
-	
 	vidname = os.path.basename(vfile).split('.')[0]
 	dirname = vfile.split('/')[-2]
-
 	fulldir = path.join(args.preprocessed_root, dirname, vidname)
 	os.makedirs(fulldir, exist_ok=True)
-
 	batches = [frames[i:i + args.batch_size] for i in range(0, len(frames), args.batch_size)]
-
 	i = -1
 	for fb in batches:
 		preds = fa[gpu_id].get_detections_for_batch(np.asarray(fb))
@@ -65,7 +60,6 @@ def process_video_file(vfile, args, gpu_id):
 
 			x1, y1, x2, y2 = f
 			cv2.imwrite(path.join(fulldir, '{}.jpg'.format(i)), fb[j][y1:y2, x1:x2])
-
 def process_audio_file(vfile, args):
 	vidname = os.path.basename(vfile).split('.')[0]
 	dirname = vfile.split('/')[-2]
@@ -81,6 +75,7 @@ def process_audio_file(vfile, args):
 	
 def mp_handler(job):
 	vfile, args, gpu_id = job
+	print('file:', vfile)
 	try:
 		process_video_file(vfile, args, gpu_id)
 	except KeyboardInterrupt:
@@ -89,10 +84,10 @@ def mp_handler(job):
 		traceback.print_exc()
 		
 def main(args):
+	
 	print('Started processing for {} with {} GPUs'.format(args.data_root, args.ngpu))
 
 	filelist = glob(path.join(args.data_root, '*/*.mp4'))
-
 	jobs = [(vfile, args, i%args.ngpu) for i, vfile in enumerate(filelist)]
 	p = ThreadPoolExecutor(args.ngpu)
 	futures = [p.submit(mp_handler, j) for j in jobs]
