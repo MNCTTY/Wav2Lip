@@ -7,7 +7,7 @@
 2) Put videofiles in source_dir/val and source_dir/train
 3) Run preprocess.py --data_root /source_dir --preprocessed_root /preprocessed_dir
 4) Put filenames in filelists train.txt and val.txt so that they contain names of folders from /preprocessed_dir (e.g. train/vid_0000)
-5) Download Expert Discriminator and Wav2Lip/Wav2Lip + GAN from [Link](https://github.com/egorovivannn/Wav2Lip#getting-the-weights) and put them in root dir
+5) Download Expert Discriminator and Wav2Lip/Wav2Lip + GAN from [Link](https://github.com/egorovivannn/Wav2Lip#getting-the-weights) and put them into root dir
 6) Tune parameters in hparams.py
 7) Run wav2lip_train.py --data_root /preprocessed_dir --checkpoint_dir /checkpoints --syncnet_checkpoint_path lipsync_expert.pth
 
