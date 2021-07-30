@@ -1,5 +1,19 @@
 # **Wav2Lip**: *Accurately Lip-syncing Videos In The Wild*
 
+
+# Readme for you to run training:
+
+1) Face detection [pre-trained model](https://www.adrianbulat.com/downloads/python-fan/s3fd-619a316812.pth) should be downloaded to `face_detection/detection/sfd/s3fd.pth`. Alternative [link](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/prajwal_k_research_iiit_ac_in/EZsy6qWuivtDnANIG73iHjIBjMSoojcIV0NULXV-yiuiIg?e=qTasa8) if the above does not work.
+2) Put videofiles in source_dir/val and source_dir/train
+3) Run preprocess.py --data_root /source_dir --preprocessed_root /preprocessed_dir
+4) Put filenames in filelists train.txt and val.txt so that they contain names of folders from /preprocessed_dir (e.g. train/vid_0000)
+5) Download Expert Discriminator and Wav2Lip/Wav2Lip + GAN from [Link] (https://github.com/egorovivannn/Wav2Lip#getting-the-weights) and put them in root dir
+6) Tune parameters in hparams.py
+7) Run wav2lip_train.py --data_root /preprocessed_dir --checkpoint_dir /checkpoints --syncnet_checkpoint_path lipsync_expert.pth
+
+
+
+
 For commercial requests, please contact us at radrabha.m@research.iiit.ac.in or prajwal.k@research.iiit.ac.in
 
 This code is part of the paper: _A Lip Sync Expert Is All You Need for Speech to Lip Generation In the Wild_ published at ACM Multimedia 2020. 
@@ -146,3 +160,5 @@ series = {MM '20}
 Acknowledgements
 ----------
 Parts of the code structure is inspired by this [TTS repository](https://github.com/r9y9/deepvoice3_pytorch). We thank the author for this wonderful code. The code for Face Detection has been taken from the [face_alignment](https://github.com/1adrianb/face-alignment) repository. We thank the authors for releasing their code and models. We thank [zabique](https://github.com/zabique) for the tutorial collab notebook.
+
+
